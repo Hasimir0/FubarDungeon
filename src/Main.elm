@@ -11,7 +11,7 @@ import Maybe exposing (..)
 
 type alias Model =
     { currPage : Page
-    , totAccounts : Int
+    , accounts : List Account
     }
 
 type Page
@@ -33,7 +33,7 @@ type alias Flags =
 init : Flags -> (Model, Cmd Msg)
 init _ =
     ( { currPage = SelectAccountPage
-      , totAccounts = 0
+      , accounts = []
       }
     , Cmd.none
     )
@@ -115,7 +115,8 @@ selectAccountView model =
         , newAccountButton
         ,noAccountsText
         ,startDelveButton
-        ,(selectAccountsText model)
+        , if List.isEmpty model.accounts then (selectAccountsText model)
+        else text "Yeah"
         ]
     
 
@@ -149,12 +150,12 @@ selectAccountsText : Model -> Element Msg
 selectAccountsText model =
     el  [ centerX ]
         ( text
-            ( "Select at least " ++ (2 - (model.totAccounts) |> String.fromInt) ++ " more account" ++ (plural model) )
+            ( "Select at least " ++ (2 - (List.length (model.accounts)) |> String.fromInt) ++ " more account" ++ (plural model) )
         )
 
 plural : Model -> String
 plural model =
-    if model.totAccounts == 1 then
+    if List.length (model.accounts) == 1 then
         " "
     else
         "s"

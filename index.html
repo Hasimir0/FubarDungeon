@@ -4837,7 +4837,7 @@ var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$FubarDungeon$init = function (_n0) {
 	return _Utils_Tuple2(
-		{currPage: author$project$FubarDungeon$SelectAccountPage, totAccounts: 0},
+		{accounts: _List_Nil, currPage: author$project$FubarDungeon$SelectAccountPage},
 		elm$core$Platform$Cmd$none);
 };
 var elm$core$Platform$Sub$batch = _Platform_batch;
@@ -10673,7 +10673,7 @@ var author$project$FubarDungeon$noAccountsText = A2(
 			mdgriffith$elm_ui$Element$text('Create more, one for each Player.'))
 		]));
 var author$project$FubarDungeon$plural = function (model) {
-	return (model.totAccounts === 1) ? ' ' : 's';
+	return (elm$core$List$length(model.accounts) === 1) ? ' ' : 's';
 };
 var author$project$FubarDungeon$selectAccountsText = function (model) {
 	return A2(
@@ -10681,7 +10681,8 @@ var author$project$FubarDungeon$selectAccountsText = function (model) {
 		_List_fromArray(
 			[mdgriffith$elm_ui$Element$centerX]),
 		mdgriffith$elm_ui$Element$text(
-			'Select at least ' + (elm$core$String$fromInt(2 - model.totAccounts) + (' more account' + author$project$FubarDungeon$plural(model)))));
+			'Select at least ' + (elm$core$String$fromInt(
+				2 - elm$core$List$length(model.accounts)) + (' more account' + author$project$FubarDungeon$plural(model)))));
 };
 var author$project$FubarDungeon$startDelveButton = A2(
 	mdgriffith$elm_ui$Element$Input$button,
@@ -10809,7 +10810,7 @@ var author$project$FubarDungeon$selectAccountView = function (model) {
 				author$project$FubarDungeon$newAccountButton,
 				author$project$FubarDungeon$noAccountsText,
 				author$project$FubarDungeon$startDelveButton,
-				author$project$FubarDungeon$selectAccountsText(model)
+				elm$core$List$isEmpty(model.accounts) ? author$project$FubarDungeon$selectAccountsText(model) : mdgriffith$elm_ui$Element$text('Yeah')
 			]));
 };
 var mdgriffith$elm_ui$Internal$Model$OnlyDynamic = F2(
