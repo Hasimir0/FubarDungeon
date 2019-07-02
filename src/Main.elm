@@ -12,6 +12,8 @@ import Maybe exposing (..)
 type alias Model =
     { currPage : Page
     , accounts : List Account
+    , tempUsername : String
+    , tempLevel : String
     }
 
 type Page
@@ -20,8 +22,8 @@ type Page
 
 
 type alias Account =
-    { name : String
-    , level : Int
+    { userName : String
+    , userLevel : String
     }
 
 type Accounts
@@ -34,6 +36,8 @@ init : Flags -> (Model, Cmd Msg)
 init _ =
     ( { currPage = SelectAccountPage
       , accounts = []
+      , tempUsername = ""
+      , tempLevel = ""
       }
     , Cmd.none
     )
@@ -51,6 +55,9 @@ type Msg
     = NoOp
     | GotoCreateAccountPage
     | GotoSelectAccountPage
+    | NewUsername String
+    | NewLevel String
+    | SaveAccount
 
 -- SUBSCRIPTIONS
 
@@ -72,6 +79,16 @@ update msg model =
         
         NoOp ->
             (model, Cmd.none)
+        
+        NewUsername uName ->
+            ( { model | tempUsername = uName} , Cmd.none )
+
+        NewLevel uLevel ->
+            ( { model | tempLevel = uLevel} , Cmd.none )
+
+        SaveAccount ->
+            ( {model | accounts = model.accounts ++ [{userName = model.tempUsername, userLevel = model.tempLevel }] }, Cmd.none)  
+
 
 
 -- VIEW
@@ -113,37 +130,12 @@ selectAccountView model =
             ]
             (text "FUBAR Dungeon")
         , newAccountButton
-        ,noAccountsText
-        ,startDelveButton
-        , if List.isEmpty model.accounts then (selectAccountsText model)
-        else text "Yeah"
+        ,
+            if List.isEmpty model.accounts then (noAccountsText)
+            else someAccountsText model
+        , startDelveButton
+        , selectAccountsText model
         ]
-    
-
-createAccountView : Model -> Element Msg
-createAccountView model =
-    column
-        [ centerX
-        , centerY
-        , width (px(400))
-        , spacingXY 0 20
-        , padding 10
-        , Border.color (rgb255 0 0 0)
-        , Border.width 1
-        ]
-        [ el
-            [ centerX
-            , padding 10
-            , Font.bold
-            , Font.size 28
-            ]
-            (text "FUBAR Dungeon 2")
-        , newAccountButton
-        ,noAccountsText
-        ,startDelveButton
-        ,(selectAccountsText model)
-        ]
-    
     
 
 selectAccountsText : Model -> Element Msg
@@ -167,9 +159,17 @@ noAccountsText =
         , padding 100
         ]
         [ el [centerX, padding 10] (text "There are no Player accounts! >_<")
-        , el [centerX, padding 10] (text "Create more, one for each Player.")
+        , el [centerX, padding 10] (text "Create more!")
+        , el [centerX, padding 10] (text "At least one for each Player.")
         ]
-    
+
+someAccountsText : Model -> (Element Msg)
+someAccountsText model =
+    column
+        [ centerX
+        , padding 100
+        ]
+        (List.map (\account -> el [centerX, padding 10] (text account.userName)) model.accounts )
 
 newAccountButton : Element Msg
 newAccountButton =
@@ -208,3 +208,81 @@ startDelveButton =
         , onPress = Nothing
         }
 
+createAccountView : Model -> Element Msg
+createAccountView model =
+    column
+        [ centerX
+        , centerY
+        , width (px(400))
+        , spacingXY 0 20
+        , padding 10
+        , Border.color (rgb255 0 0 0)
+        , Border.width 1
+        ]
+        [ el
+            [ centerX
+            , padding 10
+            , Font.bold
+            , Font.size 28
+            ]
+            (text "FUBAR Dungeon 2")
+        , newName
+        , text "your account name is..."
+        , text (model.tempUsername)
+        , text (model.tempLevel)
+        ,saveAccountButton
+        ,cancelButton
+        ]
+    
+newName : Element Msg
+newName =
+    column []
+        [Input.text []   { label = Input.labelAbove [] (text "Write your PLAYER name here...")
+                        , onChange = NewUsername
+                        , placeholder = Nothing
+                        , text = ""
+                        }
+
+        ,Input.text []   { label = Input.labelAbove [] (text "Write your PLAYER level here...")
+                        , onChange = NewLevel
+                        , placeholder = Nothing
+                        , text = ""
+                        }]
+
+
+saveAccountButton : Element Msg
+saveAccountButton =
+    Input.button
+        [ Background.color (rgb255 143 143 143)
+        , Border.color (rgb255 0 0 0)
+        , Border.rounded 20
+        , Border.width 1
+        , Font.bold
+        , Font.color (rgb255 230 230 230)
+        , paddingXY 20 6
+        , centerX
+        , width (px 250)
+        , height (px 40)
+        ]
+        { label = el [centerX] (text "Save Account")
+        , onPress = Just SaveAccount
+        }
+
+
+cancelButton : Element Msg
+cancelButton =
+    Input.button
+        [ Background.color (rgb255 143 143 143)
+        , Border.color (rgb255 0 0 0)
+        , Border.rounded 20
+        , Border.width 1
+        , Font.bold
+        , Font.color (rgb255 230 230 230)
+        , paddingXY 20 6
+        , centerX
+        , width (px 250)
+        , height (px 40)
+        ]
+        { label = el [centerX] (text "Cancel")
+        , onPress = Just GotoSelectAccountPage
+        }
