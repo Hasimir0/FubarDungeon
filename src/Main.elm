@@ -7,14 +7,17 @@ import Element.Border as Border
 import Element.Input as Input
 import Element.Font as Font
 import Element.Background as Background
+import Maybe exposing (..)
 
-
+type alias Model =
+    { currPage : Page
+    , totAccounts : Int
+    }
 
 type Page
-    = AccountPage
+    = SelectAccountPage
+    | CreateAccountPage
 
-type Msg
-    = NoOp
 
 type alias Account =
     { name : String
@@ -24,17 +27,12 @@ type alias Account =
 type Accounts
     = List Account
 
-type alias Model =
-    { currPage : Page
-    , totAccounts : Int
-    }
-
 type alias Flags =
     ()
 
 init : Flags -> (Model, Cmd Msg)
 init _ =
-    ( { currPage = AccountPage
+    ( { currPage = SelectAccountPage
       , totAccounts = 0
       }
     , Cmd.none
@@ -49,6 +47,10 @@ main =
         , subscriptions = subscriptions
         }
 
+type Msg
+    = NoOp
+    | GotoCreateAccountPage
+    | GotoSelectAccountPage
 
 -- SUBSCRIPTIONS
 
@@ -62,40 +64,86 @@ subscriptions model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        _ ->
-            ( model, Cmd.none )
+        GotoCreateAccountPage ->
+            ( { model | currPage = CreateAccountPage }, Cmd.none )
+        
+        GotoSelectAccountPage ->
+            ( { model | currPage = SelectAccountPage }, Cmd.none )
+        
+        NoOp ->
+            (model, Cmd.none)
 
 
 -- VIEW
 
 view : Model -> Browser.Document Msg
 view model =
-    { title = "FUBAR Dungeon"
-    , body =
-        [ layout [] <|
-            column
-                [ centerX
-                , centerY
-                , width (px(400))
-                , spacingXY 0 20
-                , padding 10
-                , Border.color (rgb255 0 0 0)
-                , Border.width 1
-                ]
+    let
+        content =
+            case model.currPage of
+                SelectAccountPage ->
+                    selectAccountView model
 
-                [ el
-                    [ centerX
-                    , padding 10
-                    , Font.bold
-                    , Font.size 28
-                    ] <| text "FUBAR Dungeon"
-                , newAccountButton
-                , noAccountsText
-                , startDelveButton
-                , (selectAccountsText model)
-                ]
+                CreateAccountPage ->
+                    createAccountView model
+    in
+        { title = "FUBAR Dungeon"
+        , body =
+            [ layout [] <|
+                content 
+            ]
+        }
+
+selectAccountView : Model -> Element Msg
+selectAccountView model =
+    column
+        [ centerX
+        , centerY
+        , width (px(400))
+        , spacingXY 0 20
+        , padding 10
+        , Border.color (rgb255 0 0 0)
+        , Border.width 1
         ]
-    }
+        [ el
+            [ centerX
+            , padding 10
+            , Font.bold
+            , Font.size 28
+            ]
+            (text "FUBAR Dungeon")
+        , newAccountButton
+        ,noAccountsText
+        ,startDelveButton
+        ,(selectAccountsText model)
+        ]
+    
+
+createAccountView : Model -> Element Msg
+createAccountView model =
+    column
+        [ centerX
+        , centerY
+        , width (px(400))
+        , spacingXY 0 20
+        , padding 10
+        , Border.color (rgb255 0 0 0)
+        , Border.width 1
+        ]
+        [ el
+            [ centerX
+            , padding 10
+            , Font.bold
+            , Font.size 28
+            ]
+            (text "FUBAR Dungeon 2")
+        , newAccountButton
+        ,noAccountsText
+        ,startDelveButton
+        ,(selectAccountsText model)
+        ]
+    
+    
 
 selectAccountsText : Model -> Element Msg
 selectAccountsText model =
@@ -137,7 +185,7 @@ newAccountButton =
         , height (px 40)
         ]
         { label = el [centerX] (text "Create New Account")
-        , onPress = Nothing
+        , onPress = Just GotoCreateAccountPage
         }
 
 
