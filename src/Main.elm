@@ -97,7 +97,7 @@ update msg model =
             ( { model | tempUsername = uName }, Cmd.none )
 
         NewLevel uLevel ->
-            ( { model | tempLevel = (Maybe.withDefault 0 (String.toInt uLevel)) }, Cmd.none )
+            ( { model | tempLevel = Maybe.withDefault 0 (String.toInt uLevel) }, Cmd.none )
 
         SaveAccount ->
             ( { model
@@ -267,22 +267,29 @@ newAccount =
     column
         [ centerX
         , centerY
+        
         ]
         [ Input.text
             [ Border.color (rgb255 0 0 0)
             , Border.width 1
             ]
-            { label = Input.labelAbove [] (text "Write your Player NAME here...")
+            { label = Input.labelAbove [ Font.size 18 ] (text "Write your Player NAME here...")
             , onChange = NewUsername
             , placeholder = Nothing
             , text = ""
             }
         , el [ padding 30 ] (text "")
+        , paragraph []
+            [ text "New Players start at "
+            , el [ Font.bold, Font.italic ] (text "Level 0. ")
+            , el [] (text "If you are a veteran, write your Player LEVEL here...")
+            ]
+        
         , Input.text
             [ Border.color (rgb255 0 0 0)
             , Border.width 1
             ]
-            { label = Input.labelAbove [] (text "Write your Player LEVEL here...")
+            { label = Input.labelAbove [] (text "")
             , onChange = NewLevel
             , placeholder = Nothing
             , text = ""
