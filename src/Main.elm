@@ -15,7 +15,7 @@ type alias Model =
     { currPage : Page
     , accounts : List Account
     , tempUsername : String
-    , tempLevel : String
+    , tempLevel : Int
     }
 
 
@@ -26,7 +26,7 @@ type Page
 
 type alias Account =
     { userName : String
-    , userLevel : String
+    , userLevel : Int
     }
 
 
@@ -43,7 +43,7 @@ init _ =
     ( { currPage = SelectAccountPage
       , accounts = []
       , tempUsername = ""
-      , tempLevel = ""
+      , tempLevel = 0
       }
     , Cmd.none
     )
@@ -97,13 +97,13 @@ update msg model =
             ( { model | tempUsername = uName }, Cmd.none )
 
         NewLevel uLevel ->
-            ( { model | tempLevel = uLevel }, Cmd.none )
+            ( { model | tempLevel = (Maybe.withDefault 0 (String.toInt uLevel)) }, Cmd.none )
 
         SaveAccount ->
             ( { model
                 | accounts = model.accounts ++ [ { userName = model.tempUsername, userLevel = model.tempLevel } ]
                 , tempUsername = ""
-                , tempLevel = ""
+                , tempLevel = 0
                 , currPage = SelectAccountPage
               }
             , Cmd.none
@@ -197,7 +197,7 @@ someAccountsText model =
         [ centerX
         , padding 100
         ]
-        (List.map (\account -> el [ centerX, padding 10 ] (text account.userName)) model.accounts)
+        (List.map (\account -> el [ centerX, padding 10 ] (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))) model.accounts)
 
 
 newAccountButton : Element Msg
@@ -272,7 +272,7 @@ newAccount =
             [ Border.color (rgb255 0 0 0)
             , Border.width 1
             ]
-            { label = Input.labelAbove [] (text "Write your PLAYER name here...")
+            { label = Input.labelAbove [] (text "Write your Player NAME here...")
             , onChange = NewUsername
             , placeholder = Nothing
             , text = ""
@@ -282,7 +282,7 @@ newAccount =
             [ Border.color (rgb255 0 0 0)
             , Border.width 1
             ]
-            { label = Input.labelAbove [] (text "Write your PLAYER level here...")
+            { label = Input.labelAbove [] (text "Write your Player LEVEL here...")
             , onChange = NewLevel
             , placeholder = Nothing
             , text = ""

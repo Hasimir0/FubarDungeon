@@ -4837,7 +4837,7 @@ var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$FubarDungeon$init = function (_n0) {
 	return _Utils_Tuple2(
-		{accounts: _List_Nil, currPage: author$project$FubarDungeon$SelectAccountPage, tempLevel: '', tempUsername: ''},
+		{accounts: _List_Nil, currPage: author$project$FubarDungeon$SelectAccountPage, tempLevel: 0, tempUsername: ''},
 		elm$core$Platform$Cmd$none);
 };
 var elm$core$Platform$Sub$batch = _Platform_batch;
@@ -4846,6 +4846,16 @@ var author$project$FubarDungeon$subscriptions = function (model) {
 	return elm$core$Platform$Sub$none;
 };
 var author$project$FubarDungeon$CreateAccountPage = {$: 'CreateAccountPage'};
+var elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var elm$core$String$toInt = _String_toInt;
 var author$project$FubarDungeon$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -4875,7 +4885,12 @@ var author$project$FubarDungeon$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{tempLevel: uLevel}),
+						{
+							tempLevel: A2(
+								elm$core$Maybe$withDefault,
+								0,
+								elm$core$String$toInt(uLevel))
+						}),
 					elm$core$Platform$Cmd$none);
 			default:
 				return _Utils_Tuple2(
@@ -4889,7 +4904,7 @@ var author$project$FubarDungeon$update = F2(
 										{userLevel: model.tempLevel, userName: model.tempUsername}
 									])),
 							currPage: author$project$FubarDungeon$SelectAccountPage,
-							tempLevel: '',
+							tempLevel: 0,
 							tempUsername: ''
 						}),
 					elm$core$Platform$Cmd$none);
@@ -5339,15 +5354,6 @@ var elm$core$Set$member = F2(
 	function (key, _n0) {
 		var dict = _n0.a;
 		return A2(elm$core$Dict$member, key, dict);
-	});
-var elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
 	});
 var mdgriffith$elm_ui$Internal$Model$lengthClassName = function (x) {
 	switch (x.$) {
@@ -11458,7 +11464,7 @@ var author$project$FubarDungeon$newAccount = A2(
 				label: A2(
 					mdgriffith$elm_ui$Element$Input$labelAbove,
 					_List_Nil,
-					mdgriffith$elm_ui$Element$text('Write your PLAYER name here...')),
+					mdgriffith$elm_ui$Element$text('Write your Player NAME here...')),
 				onChange: author$project$FubarDungeon$NewUsername,
 				placeholder: elm$core$Maybe$Nothing,
 				text: ''
@@ -11482,7 +11488,7 @@ var author$project$FubarDungeon$newAccount = A2(
 				label: A2(
 					mdgriffith$elm_ui$Element$Input$labelAbove,
 					_List_Nil,
-					mdgriffith$elm_ui$Element$text('Write your PLAYER level here...')),
+					mdgriffith$elm_ui$Element$text('Write your Player LEVEL here...')),
 				onChange: author$project$FubarDungeon$NewLevel,
 				placeholder: elm$core$Maybe$Nothing,
 				text: ''
@@ -11670,7 +11676,8 @@ var author$project$FubarDungeon$someAccountsText = function (model) {
 							mdgriffith$elm_ui$Element$centerX,
 							mdgriffith$elm_ui$Element$padding(10)
 						]),
-					mdgriffith$elm_ui$Element$text(account.userName));
+					mdgriffith$elm_ui$Element$text(
+						account.userName + (' - Level ' + elm$core$String$fromInt(account.userLevel))));
 			},
 			model.accounts));
 };
@@ -12123,7 +12130,6 @@ var elm$core$String$left = F2(
 		return (n < 1) ? '' : A3(elm$core$String$slice, 0, n, string);
 	});
 var elm$core$String$contains = _String_contains;
-var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
 		return {fragment: fragment, host: host, path: path, port_: port_, protocol: protocol, query: query};
