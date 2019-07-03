@@ -1,13 +1,15 @@
 module FubarDungeon exposing (main)
 
-import Browser exposing (..)
 --import Html exposing (..)
+
+import Browser exposing (..)
 import Element exposing (..)
-import Element.Border as Border
-import Element.Input as Input
-import Element.Font as Font
 import Element.Background as Background
+import Element.Border as Border
+import Element.Font as Font
+import Element.Input as Input
 import Maybe exposing (..)
+
 
 type alias Model =
     { currPage : Page
@@ -15,6 +17,7 @@ type alias Model =
     , tempUsername : String
     , tempLevel : String
     }
+
 
 type Page
     = SelectAccountPage
@@ -26,13 +29,16 @@ type alias Account =
     , userLevel : String
     }
 
+
 type Accounts
     = List Account
+
 
 type alias Flags =
     ()
 
-init : Flags -> (Model, Cmd Msg)
+
+init : Flags -> ( Model, Cmd Msg )
 init _ =
     ( { currPage = SelectAccountPage
       , accounts = []
@@ -41,6 +47,7 @@ init _ =
       }
     , Cmd.none
     )
+
 
 main : Program Flags Model Msg
 main =
@@ -51,6 +58,7 @@ main =
         , subscriptions = subscriptions
         }
 
+
 type Msg
     = NoOp
     | GotoCreateAccountPage
@@ -59,39 +67,52 @@ type Msg
     | NewLevel String
     | SaveAccount
 
+
+
 -- SUBSCRIPTIONS
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
 
+
 -- UPDATE
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotoCreateAccountPage ->
             ( { model | currPage = CreateAccountPage }, Cmd.none )
-        
+
         GotoSelectAccountPage ->
             ( { model | currPage = SelectAccountPage }, Cmd.none )
-        
+
         NoOp ->
-            (model, Cmd.none)
-        
+            ( model, Cmd.none )
+
         NewUsername uName ->
-            ( { model | tempUsername = uName} , Cmd.none )
+            ( { model | tempUsername = uName }, Cmd.none )
 
         NewLevel uLevel ->
-            ( { model | tempLevel = uLevel} , Cmd.none )
+            ( { model | tempLevel = uLevel }, Cmd.none )
 
         SaveAccount ->
-            ( {model | accounts = model.accounts ++ [{userName = model.tempUsername, userLevel = model.tempLevel }] }, Cmd.none)  
+            ( { model
+                | accounts = model.accounts ++ [ { userName = model.tempUsername, userLevel = model.tempLevel } ]
+                , tempUsername = ""
+                , tempLevel = ""
+                , currPage = SelectAccountPage
+              }
+            , Cmd.none
+            )
 
 
 
 -- VIEW
+
 
 view : Model -> Browser.Document Msg
 view model =
@@ -104,19 +125,20 @@ view model =
                 CreateAccountPage ->
                     createAccountView model
     in
-        { title = "FUBAR Dungeon"
-        , body =
-            [ layout [] <|
-                content 
-            ]
-        }
+    { title = "FUBAR Dungeon"
+    , body =
+        [ layout [] <|
+            content
+        ]
+    }
+
 
 selectAccountView : Model -> Element Msg
 selectAccountView model =
     column
         [ centerX
         , centerY
-        , width (px(400))
+        , width (px 400)
         , spacingXY 0 20
         , padding 10
         , Border.color (rgb255 0 0 0)
@@ -130,27 +152,32 @@ selectAccountView model =
             ]
             (text "FUBAR Dungeon")
         , newAccountButton
-        ,
-            if List.isEmpty model.accounts then (noAccountsText)
-            else someAccountsText model
+        , if List.isEmpty model.accounts then
+            noAccountsText
+
+          else
+            someAccountsText model
         , startDelveButton
         , selectAccountsText model
         ]
-    
+
 
 selectAccountsText : Model -> Element Msg
 selectAccountsText model =
-    el  [ centerX ]
-        ( text
-            ( "Select at least " ++ (2 - (List.length (model.accounts)) |> String.fromInt) ++ " more account" ++ (plural model) )
+    el [ centerX ]
+        (text
+            ("Select at least " ++ (2 - List.length model.accounts |> String.fromInt) ++ " more account" ++ plural model)
         )
+
 
 plural : Model -> String
 plural model =
-    if List.length (model.accounts) == 1 then
+    if List.length model.accounts == 1 then
         " "
+
     else
         "s"
+
 
 noAccountsText : Element Msg
 noAccountsText =
@@ -158,18 +185,20 @@ noAccountsText =
         [ centerX
         , padding 100
         ]
-        [ el [centerX, padding 10] (text "There are no Player accounts! >_<")
-        , el [centerX, padding 10] (text "Create more!")
-        , el [centerX, padding 10] (text "At least one for each Player.")
+        [ el [ centerX, padding 10 ] (text "There are no Player accounts! >_<")
+        , el [ centerX, padding 10 ] (text "Create more!")
+        , el [ centerX, padding 10 ] (text "At least one for each Player.")
         ]
 
-someAccountsText : Model -> (Element Msg)
+
+someAccountsText : Model -> Element Msg
 someAccountsText model =
     column
         [ centerX
         , padding 100
         ]
-        (List.map (\account -> el [centerX, padding 10] (text account.userName)) model.accounts )
+        (List.map (\account -> el [ centerX, padding 10 ] (text account.userName)) model.accounts)
+
 
 newAccountButton : Element Msg
 newAccountButton =
@@ -185,7 +214,7 @@ newAccountButton =
         , width (px 250)
         , height (px 40)
         ]
-        { label = el [centerX] (text "Create New Account")
+        { label = el [ centerX ] (text "Create New Account")
         , onPress = Just GotoCreateAccountPage
         }
 
@@ -204,16 +233,17 @@ startDelveButton =
         , width (px 250)
         , height (px 40)
         ]
-        { label = el [centerX] (text "Start New Delve")
+        { label = el [ centerX ] (text "Start New Delve")
         , onPress = Nothing
         }
+
 
 createAccountView : Model -> Element Msg
 createAccountView model =
     column
         [ centerX
         , centerY
-        , width (px(400))
+        , width (px 400)
         , spacingXY 0 20
         , padding 10
         , Border.color (rgb255 0 0 0)
@@ -225,29 +255,40 @@ createAccountView model =
             , Font.bold
             , Font.size 28
             ]
-            (text "FUBAR Dungeon 2")
-        , newName
-        , text "your account name is..."
-        , text (model.tempUsername)
-        , text (model.tempLevel)
-        ,saveAccountButton
-        ,cancelButton
+            (text "FUBAR Dungeon")
+        , newAccount
+        , saveAccountButton
+        , cancelButton
         ]
-    
-newName : Element Msg
-newName =
-    column []
-        [Input.text []   { label = Input.labelAbove [] (text "Write your PLAYER name here...")
-                        , onChange = NewUsername
-                        , placeholder = Nothing
-                        , text = ""
-                        }
 
-        ,Input.text []   { label = Input.labelAbove [] (text "Write your PLAYER level here...")
-                        , onChange = NewLevel
-                        , placeholder = Nothing
-                        , text = ""
-                        }]
+
+newAccount : Element Msg
+newAccount =
+    column
+        [ centerX
+        , centerY
+        ]
+        [ Input.text
+            [ Border.color (rgb255 0 0 0)
+            , Border.width 1
+            ]
+            { label = Input.labelAbove [] (text "Write your PLAYER name here...")
+            , onChange = NewUsername
+            , placeholder = Nothing
+            , text = ""
+            }
+        , el [ padding 30 ] (text "")
+        , Input.text
+            [ Border.color (rgb255 0 0 0)
+            , Border.width 1
+            ]
+            { label = Input.labelAbove [] (text "Write your PLAYER level here...")
+            , onChange = NewLevel
+            , placeholder = Nothing
+            , text = ""
+            }
+        , el [ padding 30 ] (text "")
+        ]
 
 
 saveAccountButton : Element Msg
@@ -264,7 +305,7 @@ saveAccountButton =
         , width (px 250)
         , height (px 40)
         ]
-        { label = el [centerX] (text "Save Account")
+        { label = el [ centerX ] (text "Save Account")
         , onPress = Just SaveAccount
         }
 
@@ -283,6 +324,6 @@ cancelButton =
         , width (px 250)
         , height (px 40)
         ]
-        { label = el [centerX] (text "Cancel")
+        { label = el [ centerX ] (text "Cancel")
         , onPress = Just GotoSelectAccountPage
         }

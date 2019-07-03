@@ -4887,7 +4887,10 @@ var author$project$FubarDungeon$update = F2(
 								_List_fromArray(
 									[
 										{userLevel: model.tempLevel, userName: model.tempUsername}
-									]))
+									])),
+							currPage: author$project$FubarDungeon$SelectAccountPage,
+							tempLevel: '',
+							tempUsername: ''
 						}),
 					elm$core$Platform$Cmd$none);
 		}
@@ -10647,6 +10650,11 @@ var author$project$FubarDungeon$NewLevel = function (a) {
 var author$project$FubarDungeon$NewUsername = function (a) {
 	return {$: 'NewUsername', a: a};
 };
+var mdgriffith$elm_ui$Internal$Model$AlignY = function (a) {
+	return {$: 'AlignY', a: a};
+};
+var mdgriffith$elm_ui$Internal$Model$CenterY = {$: 'CenterY'};
+var mdgriffith$elm_ui$Element$centerY = mdgriffith$elm_ui$Internal$Model$AlignY(mdgriffith$elm_ui$Internal$Model$CenterY);
 var mdgriffith$elm_ui$Internal$Model$AsColumn = {$: 'AsColumn'};
 var mdgriffith$elm_ui$Internal$Model$asColumn = mdgriffith$elm_ui$Internal$Model$AsColumn;
 var mdgriffith$elm_ui$Element$column = F2(
@@ -10667,6 +10675,18 @@ var mdgriffith$elm_ui$Element$column = F2(
 						attrs))),
 			mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
 	});
+var mdgriffith$elm_ui$Element$padding = function (x) {
+	return A2(
+		mdgriffith$elm_ui$Internal$Model$StyleClass,
+		mdgriffith$elm_ui$Internal$Flag$padding,
+		A5(
+			mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+			'p-' + elm$core$String$fromInt(x),
+			x,
+			x,
+			x,
+			x));
+};
 var mdgriffith$elm_ui$Element$Input$Above = {$: 'Above'};
 var mdgriffith$elm_ui$Element$Input$Label = F3(
 	function (a, b, c) {
@@ -11420,14 +11440,20 @@ var mdgriffith$elm_ui$Element$Input$text = mdgriffith$elm_ui$Element$Input$textH
 		spellchecked: false,
 		type_: mdgriffith$elm_ui$Element$Input$TextInputNode('text')
 	});
-var author$project$FubarDungeon$newName = A2(
+var author$project$FubarDungeon$newAccount = A2(
 	mdgriffith$elm_ui$Element$column,
-	_List_Nil,
+	_List_fromArray(
+		[mdgriffith$elm_ui$Element$centerX, mdgriffith$elm_ui$Element$centerY]),
 	_List_fromArray(
 		[
 			A2(
 			mdgriffith$elm_ui$Element$Input$text,
-			_List_Nil,
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$Border$color(
+					A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
+					mdgriffith$elm_ui$Element$Border$width(1)
+				]),
 			{
 				label: A2(
 					mdgriffith$elm_ui$Element$Input$labelAbove,
@@ -11438,8 +11464,20 @@ var author$project$FubarDungeon$newName = A2(
 				text: ''
 			}),
 			A2(
+			mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$padding(30)
+				]),
+			mdgriffith$elm_ui$Element$text('')),
+			A2(
 			mdgriffith$elm_ui$Element$Input$text,
-			_List_Nil,
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$Border$color(
+					A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
+					mdgriffith$elm_ui$Element$Border$width(1)
+				]),
 			{
 				label: A2(
 					mdgriffith$elm_ui$Element$Input$labelAbove,
@@ -11448,7 +11486,14 @@ var author$project$FubarDungeon$newName = A2(
 				onChange: author$project$FubarDungeon$NewLevel,
 				placeholder: elm$core$Maybe$Nothing,
 				text: ''
-			})
+			}),
+			A2(
+			mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$padding(30)
+				]),
+			mdgriffith$elm_ui$Element$text(''))
 		]));
 var author$project$FubarDungeon$SaveAccount = {$: 'SaveAccount'};
 var author$project$FubarDungeon$saveAccountButton = A2(
@@ -11479,23 +11524,6 @@ var author$project$FubarDungeon$saveAccountButton = A2(
 			mdgriffith$elm_ui$Element$text('Save Account')),
 		onPress: elm$core$Maybe$Just(author$project$FubarDungeon$SaveAccount)
 	});
-var mdgriffith$elm_ui$Internal$Model$AlignY = function (a) {
-	return {$: 'AlignY', a: a};
-};
-var mdgriffith$elm_ui$Internal$Model$CenterY = {$: 'CenterY'};
-var mdgriffith$elm_ui$Element$centerY = mdgriffith$elm_ui$Internal$Model$AlignY(mdgriffith$elm_ui$Internal$Model$CenterY);
-var mdgriffith$elm_ui$Element$padding = function (x) {
-	return A2(
-		mdgriffith$elm_ui$Internal$Model$StyleClass,
-		mdgriffith$elm_ui$Internal$Flag$padding,
-		A5(
-			mdgriffith$elm_ui$Internal$Model$PaddingStyle,
-			'p-' + elm$core$String$fromInt(x),
-			x,
-			x,
-			x,
-			x));
-};
 var mdgriffith$elm_ui$Element$spacingXY = F2(
 	function (x, y) {
 		return A2(
@@ -11543,11 +11571,8 @@ var author$project$FubarDungeon$createAccountView = function (model) {
 						mdgriffith$elm_ui$Element$Font$bold,
 						mdgriffith$elm_ui$Element$Font$size(28)
 					]),
-				mdgriffith$elm_ui$Element$text('FUBAR Dungeon 2')),
-				author$project$FubarDungeon$newName,
-				mdgriffith$elm_ui$Element$text('your account name is...'),
-				mdgriffith$elm_ui$Element$text(model.tempUsername),
-				mdgriffith$elm_ui$Element$text(model.tempLevel),
+				mdgriffith$elm_ui$Element$text('FUBAR Dungeon')),
+				author$project$FubarDungeon$newAccount,
 				author$project$FubarDungeon$saveAccountButton,
 				author$project$FubarDungeon$cancelButton
 			]));
