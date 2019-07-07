@@ -195,7 +195,13 @@ someAccountsText model =
         [ centerX
         , padding 100
         ]
-        (List.map (\account -> el [ centerX, padding 10 ] (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))) model.accounts)
+        (List.map
+            (\account ->
+                el [ centerX, padding 10 ]
+                    (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))
+            )
+            model.accounts
+        )
 
 
 newAccountButton : Element Msg
@@ -255,6 +261,7 @@ createAccountView =
             ]
             (text "FUBAR Dungeon")
         , newAccount
+        , el [ padding 30 ] (text "")
         , saveAccountButton
         , cancelButton
         ]
@@ -276,13 +283,10 @@ newAccount =
             , placeholder = Nothing
             , text = ""
             }
-
-        --, el [ padding 30 ] (text "")
         , paragraph [ paddingEach { top = 50, bottom = 0, left = 0, right = 0 } ]
             [ text "New Players start at "
             , el [ Font.bold, Font.italic ] (text "Level 0!")
             ]
-        , el [] (text "")
         , paragraph [] [ text "But if you are a veteran you can input your UserLEVEL here..." ]
         , Input.text
             [ Border.color (rgb255 0 0 0)
@@ -293,7 +297,6 @@ newAccount =
             , placeholder = Nothing
             , text = ""
             }
-        , el [ padding 30 ] (text "")
         ]
 
 

@@ -10679,18 +10679,6 @@ var mdgriffith$elm_ui$Element$column = F2(
 						attrs))),
 			mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
 	});
-var mdgriffith$elm_ui$Element$padding = function (x) {
-	return A2(
-		mdgriffith$elm_ui$Internal$Model$StyleClass,
-		mdgriffith$elm_ui$Internal$Flag$padding,
-		A5(
-			mdgriffith$elm_ui$Internal$Model$PaddingStyle,
-			'p-' + elm$core$String$fromInt(x),
-			x,
-			x,
-			x,
-			x));
-};
 var mdgriffith$elm_ui$Internal$Model$paddingName = F4(
 	function (top, right, bottom, left) {
 		return 'pad-' + (elm$core$String$fromInt(top) + ('-' + (elm$core$String$fromInt(right) + ('-' + (elm$core$String$fromInt(bottom) + ('-' + elm$core$String$fromInt(left)))))));
@@ -11528,10 +11516,6 @@ var author$project$FubarDungeon$newAccount = A2(
 					mdgriffith$elm_ui$Element$text('Level 0!'))
 				])),
 			A2(
-			mdgriffith$elm_ui$Element$el,
-			_List_Nil,
-			mdgriffith$elm_ui$Element$text('')),
-			A2(
 			mdgriffith$elm_ui$Element$paragraph,
 			_List_Nil,
 			_List_fromArray(
@@ -11554,14 +11538,7 @@ var author$project$FubarDungeon$newAccount = A2(
 				onChange: author$project$FubarDungeon$NewLevel,
 				placeholder: elm$core$Maybe$Nothing,
 				text: ''
-			}),
-			A2(
-			mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$padding(30)
-				]),
-			mdgriffith$elm_ui$Element$text(''))
+			})
 		]));
 var author$project$FubarDungeon$SaveAccount = {$: 'SaveAccount'};
 var author$project$FubarDungeon$saveAccountButton = A2(
@@ -11592,6 +11569,18 @@ var author$project$FubarDungeon$saveAccountButton = A2(
 			mdgriffith$elm_ui$Element$text('Save Account')),
 		onPress: elm$core$Maybe$Just(author$project$FubarDungeon$SaveAccount)
 	});
+var mdgriffith$elm_ui$Element$padding = function (x) {
+	return A2(
+		mdgriffith$elm_ui$Internal$Model$StyleClass,
+		mdgriffith$elm_ui$Internal$Flag$padding,
+		A5(
+			mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+			'p-' + elm$core$String$fromInt(x),
+			x,
+			x,
+			x,
+			x));
+};
 var mdgriffith$elm_ui$Element$spacingXY = F2(
 	function (x, y) {
 		return A2(
@@ -11630,6 +11619,13 @@ var author$project$FubarDungeon$createAccountView = A2(
 				]),
 			mdgriffith$elm_ui$Element$text('FUBAR Dungeon')),
 			author$project$FubarDungeon$newAccount,
+			A2(
+			mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$padding(30)
+				]),
+			mdgriffith$elm_ui$Element$text('')),
 			author$project$FubarDungeon$saveAccountButton,
 			author$project$FubarDungeon$cancelButton
 		]));
