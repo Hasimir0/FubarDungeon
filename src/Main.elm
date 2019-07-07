@@ -266,21 +266,24 @@ newAccount =
         [ centerX
         , centerY
         ]
-        [ Input.text
+        [ paragraph [ paddingEach { top = 10, bottom = 0, left = 0, right = 0 } ] [ text "Oh ye brave and courageous Player, write your UserNAME here!" ]
+        , Input.text
             [ Border.color (rgb255 0 0 0)
             , Border.width 1
             ]
-            { label = Input.labelAbove [ Font.size 18 ] (text "Write your Player NAME here...")
+            { label = Input.labelAbove [ Font.size 18 ] (text "")
             , onChange = NewUsername
             , placeholder = Nothing
             , text = ""
             }
-        , el [ padding 30 ] (text "")
-        , paragraph []
+
+        --, el [ padding 30 ] (text "")
+        , paragraph [ paddingEach { top = 50, bottom = 0, left = 0, right = 0 } ]
             [ text "New Players start at "
-            , el [ Font.bold, Font.italic ] (text "Level 0. ")
-            , el [] (text "If you are a veteran, write your Player LEVEL here...")
+            , el [ Font.bold, Font.italic ] (text "Level 0!")
             ]
+        , el [] (text "")
+        , paragraph [] [ text "But if you are a veteran you can input your UserLEVEL here..." ]
         , Input.text
             [ Border.color (rgb255 0 0 0)
             , Border.width 1

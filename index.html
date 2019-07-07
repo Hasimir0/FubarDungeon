@@ -10691,6 +10691,35 @@ var mdgriffith$elm_ui$Element$padding = function (x) {
 			x,
 			x));
 };
+var mdgriffith$elm_ui$Internal$Model$paddingName = F4(
+	function (top, right, bottom, left) {
+		return 'pad-' + (elm$core$String$fromInt(top) + ('-' + (elm$core$String$fromInt(right) + ('-' + (elm$core$String$fromInt(bottom) + ('-' + elm$core$String$fromInt(left)))))));
+	});
+var mdgriffith$elm_ui$Element$paddingEach = function (_n0) {
+	var top = _n0.top;
+	var right = _n0.right;
+	var bottom = _n0.bottom;
+	var left = _n0.left;
+	return (_Utils_eq(top, right) && (_Utils_eq(top, bottom) && _Utils_eq(top, left))) ? A2(
+		mdgriffith$elm_ui$Internal$Model$StyleClass,
+		mdgriffith$elm_ui$Internal$Flag$padding,
+		A5(
+			mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+			'p-' + elm$core$String$fromInt(top),
+			top,
+			top,
+			top,
+			top)) : A2(
+		mdgriffith$elm_ui$Internal$Model$StyleClass,
+		mdgriffith$elm_ui$Internal$Flag$padding,
+		A5(
+			mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+			A4(mdgriffith$elm_ui$Internal$Model$paddingName, top, right, bottom, left),
+			top,
+			right,
+			bottom,
+			left));
+};
 var mdgriffith$elm_ui$Internal$Model$Fill = function (a) {
 	return {$: 'Fill', a: a};
 };
@@ -10813,35 +10842,6 @@ var mdgriffith$elm_ui$Internal$Model$Nearby = F2(
 	});
 var mdgriffith$elm_ui$Element$inFront = function (element) {
 	return A2(mdgriffith$elm_ui$Internal$Model$Nearby, mdgriffith$elm_ui$Internal$Model$InFront, element);
-};
-var mdgriffith$elm_ui$Internal$Model$paddingName = F4(
-	function (top, right, bottom, left) {
-		return 'pad-' + (elm$core$String$fromInt(top) + ('-' + (elm$core$String$fromInt(right) + ('-' + (elm$core$String$fromInt(bottom) + ('-' + elm$core$String$fromInt(left)))))));
-	});
-var mdgriffith$elm_ui$Element$paddingEach = function (_n0) {
-	var top = _n0.top;
-	var right = _n0.right;
-	var bottom = _n0.bottom;
-	var left = _n0.left;
-	return (_Utils_eq(top, right) && (_Utils_eq(top, bottom) && _Utils_eq(top, left))) ? A2(
-		mdgriffith$elm_ui$Internal$Model$StyleClass,
-		mdgriffith$elm_ui$Internal$Flag$padding,
-		A5(
-			mdgriffith$elm_ui$Internal$Model$PaddingStyle,
-			'p-' + elm$core$String$fromInt(top),
-			top,
-			top,
-			top,
-			top)) : A2(
-		mdgriffith$elm_ui$Internal$Model$StyleClass,
-		mdgriffith$elm_ui$Internal$Flag$padding,
-		A5(
-			mdgriffith$elm_ui$Internal$Model$PaddingStyle,
-			A4(mdgriffith$elm_ui$Internal$Model$paddingName, top, right, bottom, left),
-			top,
-			right,
-			bottom,
-			left));
 };
 var mdgriffith$elm_ui$Element$rgba = mdgriffith$elm_ui$Internal$Model$Rgba;
 var mdgriffith$elm_ui$Element$Input$Padding = F4(
@@ -11481,6 +11481,17 @@ var author$project$FubarDungeon$newAccount = A2(
 	_List_fromArray(
 		[
 			A2(
+			mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$paddingEach(
+					{bottom: 0, left: 0, right: 0, top: 10})
+				]),
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$text('Oh ye brave and courageous Player, write your UserNAME here!')
+				])),
+			A2(
 			mdgriffith$elm_ui$Element$Input$text,
 			_List_fromArray(
 				[
@@ -11495,21 +11506,18 @@ var author$project$FubarDungeon$newAccount = A2(
 						[
 							mdgriffith$elm_ui$Element$Font$size(18)
 						]),
-					mdgriffith$elm_ui$Element$text('Write your Player NAME here...')),
+					mdgriffith$elm_ui$Element$text('')),
 				onChange: author$project$FubarDungeon$NewUsername,
 				placeholder: elm$core$Maybe$Nothing,
 				text: ''
 			}),
 			A2(
-			mdgriffith$elm_ui$Element$el,
+			mdgriffith$elm_ui$Element$paragraph,
 			_List_fromArray(
 				[
-					mdgriffith$elm_ui$Element$padding(30)
+					mdgriffith$elm_ui$Element$paddingEach(
+					{bottom: 0, left: 0, right: 0, top: 50})
 				]),
-			mdgriffith$elm_ui$Element$text('')),
-			A2(
-			mdgriffith$elm_ui$Element$paragraph,
-			_List_Nil,
 			_List_fromArray(
 				[
 					mdgriffith$elm_ui$Element$text('New Players start at '),
@@ -11517,11 +11525,18 @@ var author$project$FubarDungeon$newAccount = A2(
 					mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[mdgriffith$elm_ui$Element$Font$bold, mdgriffith$elm_ui$Element$Font$italic]),
-					mdgriffith$elm_ui$Element$text('Level 0. ')),
-					A2(
-					mdgriffith$elm_ui$Element$el,
-					_List_Nil,
-					mdgriffith$elm_ui$Element$text('If you are a veteran, write your Player LEVEL here...'))
+					mdgriffith$elm_ui$Element$text('Level 0!'))
+				])),
+			A2(
+			mdgriffith$elm_ui$Element$el,
+			_List_Nil,
+			mdgriffith$elm_ui$Element$text('')),
+			A2(
+			mdgriffith$elm_ui$Element$paragraph,
+			_List_Nil,
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$text('But if you are a veteran you can input your UserLEVEL here...')
 				])),
 			A2(
 			mdgriffith$elm_ui$Element$Input$text,
