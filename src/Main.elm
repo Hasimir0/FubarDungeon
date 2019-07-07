@@ -2,13 +2,13 @@ module FubarDungeon exposing (main)
 
 --import Html exposing (..)
 
-import Browser exposing (..)
+import Browser exposing (document)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
-import Maybe exposing (..)
+--import Maybe exposing (..)
 
 
 type alias Model =
@@ -60,9 +60,8 @@ main =
 
 
 type Msg
-    = NoOp
-    | GotoCreateAccountPage
-    | GotoSelectAccountPage
+    = UserClickedButtonCreateAccountInSelectAccountPage
+    | UserClickedButtonCancelInCreateAccountPage
     | NewUsername String
     | NewLevel String
     | SaveAccount
@@ -70,7 +69,6 @@ type Msg
 
 
 -- SUBSCRIPTIONS
-
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -84,14 +82,11 @@ subscriptions model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        GotoCreateAccountPage ->
+        UserClickedButtonCreateAccountInSelectAccountPage ->
             ( { model | currPage = CreateAccountPage }, Cmd.none )
 
-        GotoSelectAccountPage ->
+        UserClickedButtonCancelInCreateAccountPage ->
             ( { model | currPage = SelectAccountPage }, Cmd.none )
-
-        NoOp ->
-            ( model, Cmd.none )
 
         NewUsername uName ->
             ( { model | tempUsername = uName }, Cmd.none )
@@ -123,7 +118,7 @@ view model =
                     selectAccountView model
 
                 CreateAccountPage ->
-                    createAccountView model
+                    createAccountView
     in
     { title = "FUBAR Dungeon"
     , body =
@@ -215,7 +210,7 @@ newAccountButton =
         , height (px 40)
         ]
         { label = el [ centerX ] (text "Create New Account")
-        , onPress = Just GotoCreateAccountPage
+        , onPress = Just UserClickedButtonCreateAccountInSelectAccountPage
         }
 
 
@@ -238,8 +233,8 @@ startDelveButton =
         }
 
 
-createAccountView : Model -> Element Msg
-createAccountView model =
+createAccountView : Element Msg
+createAccountView  =
     column
         [ centerX
         , centerY
@@ -332,5 +327,5 @@ cancelButton =
         , height (px 40)
         ]
         { label = el [ centerX ] (text "Cancel")
-        , onPress = Just GotoSelectAccountPage
+        , onPress = Just UserClickedButtonCancelInCreateAccountPage
         }
