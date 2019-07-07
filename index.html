@@ -11650,10 +11650,7 @@ var author$project$FubarDungeon$newAccountButton = A2(
 var author$project$FubarDungeon$noAccountsText = A2(
 	mdgriffith$elm_ui$Element$column,
 	_List_fromArray(
-		[
-			mdgriffith$elm_ui$Element$centerX,
-			mdgriffith$elm_ui$Element$padding(100)
-		]),
+		[mdgriffith$elm_ui$Element$centerX]),
 	_List_fromArray(
 		[
 			A2(
@@ -11753,7 +11750,7 @@ var author$project$FubarDungeon$selectAccountView = function (model) {
 				mdgriffith$elm_ui$Element$centerY,
 				mdgriffith$elm_ui$Element$width(
 				mdgriffith$elm_ui$Element$px(400)),
-				A2(mdgriffith$elm_ui$Element$spacingXY, 0, 20),
+				A2(mdgriffith$elm_ui$Element$spacingXY, 0, 30),
 				mdgriffith$elm_ui$Element$padding(10),
 				mdgriffith$elm_ui$Element$Border$color(
 				A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
@@ -11766,13 +11763,19 @@ var author$project$FubarDungeon$selectAccountView = function (model) {
 				_List_fromArray(
 					[
 						mdgriffith$elm_ui$Element$centerX,
-						mdgriffith$elm_ui$Element$padding(10),
 						mdgriffith$elm_ui$Element$Font$bold,
 						mdgriffith$elm_ui$Element$Font$size(28)
 					]),
 				mdgriffith$elm_ui$Element$text('FUBAR Dungeon')),
-				author$project$FubarDungeon$newAccountButton,
 				elm$core$List$isEmpty(model.accounts) ? author$project$FubarDungeon$noAccountsText : author$project$FubarDungeon$someAccountsText(model),
+				A2(
+				mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$padding(10)
+					]),
+				mdgriffith$elm_ui$Element$text('')),
+				author$project$FubarDungeon$newAccountButton,
 				author$project$FubarDungeon$startDelveButton,
 				author$project$FubarDungeon$selectAccountsText(model)
 			]));

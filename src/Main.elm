@@ -8,6 +8,9 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
+
+
+
 --import Maybe exposing (..)
 
 
@@ -69,6 +72,7 @@ type Msg
 
 
 -- SUBSCRIPTIONS
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -134,24 +138,24 @@ selectAccountView model =
         [ centerX
         , centerY
         , width (px 400)
-        , spacingXY 0 20
+        , spacingXY 0 30
         , padding 10
         , Border.color (rgb255 0 0 0)
         , Border.width 1
         ]
         [ el
             [ centerX
-            , padding 10
             , Font.bold
             , Font.size 28
             ]
             (text "FUBAR Dungeon")
-        , newAccountButton
         , if List.isEmpty model.accounts then
             noAccountsText
 
           else
             someAccountsText model
+        , el [ padding 10 ] (text "")
+        , newAccountButton
         , startDelveButton
         , selectAccountsText model
         ]
@@ -178,7 +182,6 @@ noAccountsText : Element Msg
 noAccountsText =
     column
         [ centerX
-        , padding 100
         ]
         [ el [ centerX, padding 10 ] (text "There are no Player accounts! >_<")
         , el [ centerX, padding 10 ] (text "Create more!")
@@ -234,7 +237,7 @@ startDelveButton =
 
 
 createAccountView : Element Msg
-createAccountView  =
+createAccountView =
     column
         [ centerX
         , centerY
@@ -262,7 +265,6 @@ newAccount =
     column
         [ centerX
         , centerY
-        
         ]
         [ Input.text
             [ Border.color (rgb255 0 0 0)
@@ -279,7 +281,6 @@ newAccount =
             , el [ Font.bold, Font.italic ] (text "Level 0. ")
             , el [] (text "If you are a veteran, write your Player LEVEL here...")
             ]
-        
         , Input.text
             [ Border.color (rgb255 0 0 0)
             , Border.width 1
