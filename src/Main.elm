@@ -22,6 +22,15 @@ type alias Model =
     }
 
 
+type Msg
+    = UserClickedButtonCreateAccountInSelectAccountPage
+    | UserClickedButtonCancelInCreateAccountPage
+    | NewUsername String
+    | NewLevel String
+    | SaveAccount
+    | UserChangedAccountSelection Bool
+
+
 type Page
     = SelectAccountPage
     | CreateAccountPage
@@ -30,6 +39,7 @@ type Page
 type alias Account =
     { userName : String
     , userLevel : Int
+    , isSelected : Bool
     }
 
 
@@ -62,14 +72,6 @@ main =
         }
 
 
-type Msg
-    = UserClickedButtonCreateAccountInSelectAccountPage
-    | UserClickedButtonCancelInCreateAccountPage
-    | NewUsername String
-    | NewLevel String
-    | SaveAccount
-
-
 
 -- SUBSCRIPTIONS
 
@@ -100,13 +102,30 @@ update msg model =
 
         SaveAccount ->
             ( { model
-                | accounts = model.accounts ++ [ { userName = model.tempUsername, userLevel = model.tempLevel } ]
+                | accounts =
+                    model.accounts
+                        ++ [ { userName = model.tempUsername
+                             , userLevel = model.tempLevel
+                             , isSelecter = False
+                             }
+                           ]
                 , tempUsername = ""
                 , tempLevel = 0
                 , currPage = SelectAccountPage
               }
             , Cmd.none
             )
+
+        UserChangedAccountSelection check ->
+            List.map
+                (\account ->
+                    if account.isSelected == True then
+                        { account | isSelecte = False }
+
+                    else
+                        { account | isSelecte = True }
+                )
+                model.accounts
 
 
 
@@ -198,7 +217,12 @@ someAccountsText model =
         (List.map
             (\account ->
                 row []
-                    [ el [] (text "checkBox")
+                    [ Input.checkbox []
+                        { onChange = UserChangedAccountSelection
+                        , icon = iconEmpty
+                        , checked = iconMarked
+                        , label = Nothing
+                        }
                     , el [ centerX, padding 10 ]
                         (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))
                     , el [] (text "edit")
