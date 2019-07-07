@@ -11701,6 +11701,24 @@ var author$project$FubarDungeon$selectAccountsText = function (model) {
 			'Select at least ' + (elm$core$String$fromInt(
 				2 - elm$core$List$length(model.accounts)) + (' more account' + author$project$FubarDungeon$plural(model)))));
 };
+var mdgriffith$elm_ui$Element$row = F2(
+	function (attrs, children) {
+		return A4(
+			mdgriffith$elm_ui$Internal$Model$element,
+			mdgriffith$elm_ui$Internal$Model$asRow,
+			mdgriffith$elm_ui$Internal$Model$div,
+			A2(
+				elm$core$List$cons,
+				mdgriffith$elm_ui$Internal$Model$htmlClass(mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + mdgriffith$elm_ui$Internal$Style$classes.contentCenterY)),
+				A2(
+					elm$core$List$cons,
+					mdgriffith$elm_ui$Element$width(mdgriffith$elm_ui$Element$shrink),
+					A2(
+						elm$core$List$cons,
+						mdgriffith$elm_ui$Element$height(mdgriffith$elm_ui$Element$shrink),
+						attrs))),
+			mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+	});
 var author$project$FubarDungeon$someAccountsText = function (model) {
 	return A2(
 		mdgriffith$elm_ui$Element$column,
@@ -11713,14 +11731,32 @@ var author$project$FubarDungeon$someAccountsText = function (model) {
 			elm$core$List$map,
 			function (account) {
 				return A2(
-					mdgriffith$elm_ui$Element$el,
+					mdgriffith$elm_ui$Element$row,
+					_List_Nil,
 					_List_fromArray(
 						[
-							mdgriffith$elm_ui$Element$centerX,
-							mdgriffith$elm_ui$Element$padding(10)
-						]),
-					mdgriffith$elm_ui$Element$text(
-						account.userName + (' - Level ' + elm$core$String$fromInt(account.userLevel))));
+							A2(
+							mdgriffith$elm_ui$Element$el,
+							_List_Nil,
+							mdgriffith$elm_ui$Element$text('checkBox')),
+							A2(
+							mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									mdgriffith$elm_ui$Element$centerX,
+									mdgriffith$elm_ui$Element$padding(10)
+								]),
+							mdgriffith$elm_ui$Element$text(
+								account.userName + (' - Level ' + elm$core$String$fromInt(account.userLevel)))),
+							A2(
+							mdgriffith$elm_ui$Element$el,
+							_List_Nil,
+							mdgriffith$elm_ui$Element$text('edit')),
+							A2(
+							mdgriffith$elm_ui$Element$el,
+							_List_Nil,
+							mdgriffith$elm_ui$Element$text('delete'))
+						]));
 			},
 			model.accounts));
 };

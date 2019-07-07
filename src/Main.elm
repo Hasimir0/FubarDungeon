@@ -197,8 +197,13 @@ someAccountsText model =
         ]
         (List.map
             (\account ->
-                el [ centerX, padding 10 ]
-                    (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))
+                row []
+                    [ el [] (text "checkBox")
+                    , el [ centerX, padding 10 ]
+                        (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))
+                    , el [] (text "edit")
+                    , el [] (text "delete")
+                    ]
             )
             model.accounts
         )
