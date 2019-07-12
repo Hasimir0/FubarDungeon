@@ -1,5 +1,6 @@
 -- elm-live src/Main.elm --open
 
+
 module FubarDungeon exposing (main)
 
 --import Html exposing (..)
@@ -32,7 +33,7 @@ type Msg
     | NewUsername String
     | NewLevel String
     | SaveAccount
-    | UserChangedAccountSelection Int Bool
+    | UserChangedAccountSelection Bool
 
 
 type Page
@@ -44,11 +45,8 @@ type alias Account =
     { userName : String
     , userLevel : Int
     , isSelected : Bool
+    , indexID : Int
     }
-
-
---type Accounts
-  --  = List Account
 
 
 type alias Flags =
@@ -111,6 +109,7 @@ update msg model =
                         ++ [ { userName = model.tempUsername
                              , userLevel = model.tempLevel
                              , isSelected = False
+                             , indexID = 0
                              }
                            ]
                 , tempUsername = ""
@@ -119,13 +118,10 @@ update msg model =
               }
             , Cmd.none
             )
-
-        UserChangedAccountSelection index check ->
-            ( Extra.getAt
+        UserChangedAccountSelection check ->
+            ( if check == False then checkboxIcon False else checkboxIcon True
             , Cmd.none
             )
-
-
 
 -- VIEW
 
@@ -213,13 +209,13 @@ someAccountsText model =
         , padding 100
         ]
         (List.indexedMap
-            (\index account ->
+            (\i account ->
                 row []
                     [ Input.checkbox []
-                        { onChange = UserChangedAccountSelection index
-                        , icon = List.isEmpty
-                        , checked = image [] { src = "", description = "name" }
-                        , label = Nothing
+                        { checked = False
+                        , icon = checkboxIcon
+                        , label = Input.labelAbove [] (text "a")
+                        , onChange = UserChangedAccountSelection
                         }
                     , el [ centerX, padding 10 ]
                         (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))
@@ -230,6 +226,8 @@ someAccountsText model =
             model.accounts
         )
 
+checkboxIcon a =
+    if True then el [] (text "X") else el [] (text "O")
 
 newAccountButton : Element Msg
 newAccountButton =

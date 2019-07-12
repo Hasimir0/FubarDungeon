@@ -4899,7 +4899,7 @@ var author$project$FubarDungeon$update = F2(
 								model.accounts,
 								_List_fromArray(
 									[
-										{userLevel: model.tempLevel, userName: model.tempUsername}
+										{isSelected: false, userLevel: model.tempLevel, userName: model.tempUsername}
 									])),
 							currPage: author$project$FubarDungeon$SelectAccountPage,
 							tempLevel: 0,
@@ -11728,36 +11728,33 @@ var author$project$FubarDungeon$someAccountsText = function (model) {
 				mdgriffith$elm_ui$Element$padding(100)
 			]),
 		A2(
-			elm$core$List$map,
-			function (account) {
-				return A2(
-					mdgriffith$elm_ui$Element$row,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							mdgriffith$elm_ui$Element$el,
-							_List_Nil,
-							mdgriffith$elm_ui$Element$text('checkBox')),
-							A2(
-							mdgriffith$elm_ui$Element$el,
-							_List_fromArray(
-								[
-									mdgriffith$elm_ui$Element$centerX,
-									mdgriffith$elm_ui$Element$padding(10)
-								]),
-							mdgriffith$elm_ui$Element$text(
-								account.userName + (' - Level ' + elm$core$String$fromInt(account.userLevel)))),
-							A2(
-							mdgriffith$elm_ui$Element$el,
-							_List_Nil,
-							mdgriffith$elm_ui$Element$text('edit')),
-							A2(
-							mdgriffith$elm_ui$Element$el,
-							_List_Nil,
-							mdgriffith$elm_ui$Element$text('delete'))
-						]));
-			},
+			elm$core$List$indexedMap,
+			F2(
+				function (i, account) {
+					return A2(
+						mdgriffith$elm_ui$Element$row,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								mdgriffith$elm_ui$Element$el,
+								_List_fromArray(
+									[
+										mdgriffith$elm_ui$Element$centerX,
+										mdgriffith$elm_ui$Element$padding(10)
+									]),
+								mdgriffith$elm_ui$Element$text(
+									account.userName + (' - Level ' + elm$core$String$fromInt(account.userLevel)))),
+								A2(
+								mdgriffith$elm_ui$Element$el,
+								_List_Nil,
+								mdgriffith$elm_ui$Element$text('edit')),
+								A2(
+								mdgriffith$elm_ui$Element$el,
+								_List_Nil,
+								mdgriffith$elm_ui$Element$text('delete'))
+							]));
+				}),
 			model.accounts));
 };
 var author$project$FubarDungeon$startDelveButton = A2(
