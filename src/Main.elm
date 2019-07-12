@@ -24,6 +24,7 @@ type alias Model =
     , accounts : List Account
     , tempUsername : String
     , tempLevel : Int
+    , boxIsChecked : Bool
     }
 
 
@@ -59,6 +60,7 @@ init _ =
       , accounts = []
       , tempUsername = ""
       , tempLevel = 0
+      , boxIsChecked = False
       }
     , Cmd.none
     )
@@ -109,7 +111,7 @@ update msg model =
                         ++ [ { userName = model.tempUsername
                              , userLevel = model.tempLevel
                              , isSelected = False
-                             , indexID = 0
+                             , indexID = model.accounts |> List.length
                              }
                            ]
                 , tempUsername = ""
@@ -118,10 +120,18 @@ update msg model =
               }
             , Cmd.none
             )
+
         UserChangedAccountSelection check ->
-            ( if check == False then checkboxIcon False else checkboxIcon True
+            \newChech -> Just (getAt |> model.account.indexID |> model.account.isSelected
+            ( if newCheck == False then
+                { model | newCheck = True }
+
+              else
+                { model | newCheck = False }
             , Cmd.none
             )
+
+
 
 -- VIEW
 
@@ -208,26 +218,32 @@ someAccountsText model =
         [ centerX
         , padding 100
         ]
-        (List.indexedMap
-            (\i account ->
-                row []
-                    [ Input.checkbox []
-                        { checked = False
-                        , icon = checkboxIcon
-                        , label = Input.labelAbove [] (text "a")
-                        , onChange = UserChangedAccountSelection
-                        }
-                    , el [ centerX, padding 10 ]
-                        (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))
-                    , el [] (text "edit")
-                    , el [] (text "delete")
-                    ]
-            )
-            model.accounts
+        (model.accounts
+            |> List.indexedMap
+                (\i account ->
+                    row []
+                        [ Input.checkbox []
+                            { checked = account.isSelected
+                            , icon = checkboxIcon
+                            , label = Input.labelAbove [] (text "a")
+                            , onChange = UserChangedAccountSelection
+                            }
+                        , el [ centerX, padding 10 ]
+                            (text ((account.indexID |> String.fromInt) ++ " " ++ account.userName ++ " - Level " ++ String.fromInt account.userLevel))
+                        , el [] (text "edit")
+                        , el [] (text "delete")
+                        ]
+                )
         )
 
+
 checkboxIcon a =
-    if True then el [] (text "X") else el [] (text "O")
+    if True then
+        el [] (text "X")
+
+    else
+        el [] (text "O")
+
 
 newAccountButton : Element Msg
 newAccountButton =
