@@ -4837,7 +4837,7 @@ var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$FubarDungeon$init = function (_n0) {
 	return _Utils_Tuple2(
-		{accounts: _List_Nil, currPage: author$project$FubarDungeon$SelectAccountPage, tempLevel: 0, tempUsername: ''},
+		{accounts: _List_Nil, currPage: author$project$FubarDungeon$SelectAccountPage, tempLevel: 0, tempUsername: '', totSelected: 0},
 		elm$core$Platform$Cmd$none);
 };
 var elm$core$Platform$Sub$batch = _Platform_batch;
@@ -11891,8 +11891,7 @@ var author$project$FubarDungeon$selectAccountsText = function (model) {
 		_List_fromArray(
 			[mdgriffith$elm_ui$Element$centerX]),
 		mdgriffith$elm_ui$Element$text(
-			'Select at least ' + (elm$core$String$fromInt(
-				2 - elm$core$List$length(model.accounts)) + (' more account' + author$project$FubarDungeon$plural(model)))));
+			'Select at least ' + (elm$core$String$fromInt(2 - model.totSelected) + (' more account' + author$project$FubarDungeon$plural(model)))));
 };
 var author$project$FubarDungeon$UserChangedAccountCheck = F2(
 	function (a, b) {

@@ -17,6 +17,7 @@ type alias Model =
     , accounts : List Account
     , tempUsername : String
     , tempLevel : Int
+    , totSelected : Int
     }
 
 
@@ -52,6 +53,7 @@ init _ =
       , accounts = []
       , tempUsername = ""
       , tempLevel = 0
+      , totSelected = 0
       }
     , Cmd.none
     )
@@ -163,7 +165,7 @@ selectAccountView model =
             , Font.size 28
             ]
             (text "FUBAR Dungeon")
-        , if List.isEmpty model.accounts then
+        , if model.accounts |> List.isEmpty then
             noAccountsText
 
           else
@@ -179,8 +181,21 @@ selectAccountsText : Model -> Element Msg
 selectAccountsText model =
     el [ centerX ]
         (text
-            ("Select at least " ++ (2 - List.length model.accounts |> String.fromInt) ++ " more account" ++ plural model)
+            ("Select at least " ++ ((2 - model.totSelected) |> String.fromInt) ++ " more account" ++ plural model)
         )
+
+
+totChecked : Model -> List Model
+totChecked model =
+    model.accounts
+        |> List.map
+            (\account ->
+                if account.isSelected == True then
+                    { model | totSelected = model.totSelected + 1 }
+
+                else
+                     { model | totSelected = model.totSelected}
+            )
 
 
 plural : Model -> String
