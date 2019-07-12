@@ -3,20 +3,13 @@
 
 module FubarDungeon exposing (main)
 
---import Html exposing (..)
-
-import Array exposing (..)
 import Browser exposing (document)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
-import List.Extra as Extra exposing (getAt)
-
-
-
---import Maybe exposing (..)
+import List.Extra as Extra exposing (updateAt)
 
 
 type alias Model =
@@ -24,7 +17,6 @@ type alias Model =
     , accounts : List Account
     , tempUsername : String
     , tempLevel : Int
-    , boxIsChecked : Bool
     }
 
 
@@ -34,7 +26,7 @@ type Msg
     | NewUsername String
     | NewLevel String
     | SaveAccount
-    | UserChangedAccountSelection Bool
+    | UserChangedAccountCheck Int Bool
 
 
 type Page
@@ -60,7 +52,6 @@ init _ =
       , accounts = []
       , tempUsername = ""
       , tempLevel = 0
-      , boxIsChecked = False
       }
     , Cmd.none
     )
@@ -121,15 +112,15 @@ update msg model =
             , Cmd.none
             )
 
-        UserChangedAccountSelection check ->
-            \newChech -> Just (getAt |> model.account.indexID |> model.account.isSelected
-            ( if newCheck == False then
-                { model | newCheck = True }
-
-              else
-                { model | newCheck = False }
+        UserChangedAccountCheck id check ->
+            ( { model | accounts = Extra.updateAt id (newCheckStatus check) model.accounts }
             , Cmd.none
             )
+
+
+newCheckStatus : Bool -> Account -> Account
+newCheckStatus newStatus account =
+    { account | isSelected = newStatus }
 
 
 
@@ -220,13 +211,13 @@ someAccountsText model =
         ]
         (model.accounts
             |> List.indexedMap
-                (\i account ->
+                (\_ account ->
                     row []
                         [ Input.checkbox []
                             { checked = account.isSelected
                             , icon = checkboxIcon
-                            , label = Input.labelAbove [] (text "a")
-                            , onChange = UserChangedAccountSelection
+                            , label = Input.labelAbove [] (text "")
+                            , onChange = UserChangedAccountCheck account.indexID
                             }
                         , el [ centerX, padding 10 ]
                             (text ((account.indexID |> String.fromInt) ++ " " ++ account.userName ++ " - Level " ++ String.fromInt account.userLevel))
@@ -237,8 +228,9 @@ someAccountsText model =
         )
 
 
+checkboxIcon : Bool -> Element Msg
 checkboxIcon a =
-    if True then
+    if a == True then
         el [] (text "X")
 
     else
