@@ -124,9 +124,6 @@ newCheckStatus : Bool -> Account -> Account
 newCheckStatus newStatus account =
     { account | isSelected = newStatus }
 
-updateTot = 
-
-
 
 
 -- VIEW
@@ -184,21 +181,8 @@ selectAccountsText : Model -> Element Msg
 selectAccountsText model =
     el [ centerX ]
         (text
-            ("Select at least " ++ ((2 - model.totSelected) |> String.fromInt) ++ " more account" ++ plural model)
+            ("Select at least " ++ ((2 - Extra.count (isSelected == True) model.accounts |> String.fromInt) ++ " more account" ++ plural model))
         )
-
-
-totChecked : Model -> List Model
-totChecked model =
-    model.accounts
-        |> List.map
-            (\account ->
-                if account.isSelected == True then
-                    { model | totSelected = model.totSelected + 1 }
-
-                else
-                     { model | totSelected = model.totSelected}
-            )
 
 
 plural : Model -> String
