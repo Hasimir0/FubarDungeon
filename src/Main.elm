@@ -124,6 +124,9 @@ newCheckStatus : Bool -> Account -> Account
 newCheckStatus newStatus account =
     { account | isSelected = newStatus }
 
+updateTot = 
+
+
 
 
 -- VIEW
