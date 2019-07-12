@@ -1,13 +1,17 @@
+-- elm-live src/Main.elm --open
+
 module FubarDungeon exposing (main)
 
 --import Html exposing (..)
 
+import Array exposing (..)
 import Browser exposing (document)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
+import List.Extra as Extra exposing (getAt)
 
 
 
@@ -28,7 +32,7 @@ type Msg
     | NewUsername String
     | NewLevel String
     | SaveAccount
-    | UserChangedAccountSelection Bool
+    | UserChangedAccountSelection Int Bool
 
 
 type Page
@@ -43,8 +47,8 @@ type alias Account =
     }
 
 
-type Accounts
-    = List Account
+--type Accounts
+  --  = List Account
 
 
 type alias Flags =
@@ -106,7 +110,7 @@ update msg model =
                     model.accounts
                         ++ [ { userName = model.tempUsername
                              , userLevel = model.tempLevel
-                             , isSelecter = False
+                             , isSelected = False
                              }
                            ]
                 , tempUsername = ""
@@ -116,16 +120,10 @@ update msg model =
             , Cmd.none
             )
 
-        UserChangedAccountSelection check ->
-            List.map
-                (\account ->
-                    if account.isSelected == True then
-                        { account | isSelecte = False }
-
-                    else
-                        { account | isSelecte = True }
-                )
-                model.accounts
+        UserChangedAccountSelection index check ->
+            ( Extra.getAt
+            , Cmd.none
+            )
 
 
 
@@ -214,13 +212,13 @@ someAccountsText model =
         [ centerX
         , padding 100
         ]
-        (List.map
-            (\account ->
+        (List.indexedMap
+            (\index account ->
                 row []
                     [ Input.checkbox []
-                        { onChange = UserChangedAccountSelection
-                        , icon = iconEmpty
-                        , checked = iconMarked
+                        { onChange = UserChangedAccountSelection index
+                        , icon = List.isEmpty
+                        , checked = image [] { src = "", description = "name" }
                         , label = Nothing
                         }
                     , el [ centerX, padding 10 ]
