@@ -220,7 +220,7 @@ someAccountsText model =
                             , onChange = UserChangedAccountCheck account.indexID
                             }
                         , el [ centerX, padding 10 ]
-                            (text ((account.indexID |> String.fromInt) ++ " " ++ account.userName ++ " - Level " ++ String.fromInt account.userLevel))
+                            (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))
                         , el [] (text "edit")
                         , el [] (text "delete")
                         ]
