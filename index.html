@@ -5085,7 +5085,7 @@ var author$project$FubarDungeon$update = F2(
 							tempUsername: ''
 						}),
 					elm$core$Platform$Cmd$none);
-			default:
+			case 'UserChangedAccountCheck':
 				var id = msg.a;
 				var check = msg.b;
 				return _Utils_Tuple2(
@@ -5099,6 +5099,14 @@ var author$project$FubarDungeon$update = F2(
 								model.accounts),
 							totSelected: check ? (model.totSelected + 1) : (model.totSelected - 1)
 						}),
+					elm$core$Platform$Cmd$none);
+			default:
+				var name = msg.a;
+				var level = msg.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{currPage: author$project$FubarDungeon$CreateAccountPage, tempLevel: level, tempUsername: name}),
 					elm$core$Platform$Cmd$none);
 		}
 	});
@@ -11656,84 +11664,86 @@ var mdgriffith$elm_ui$Element$Input$text = mdgriffith$elm_ui$Element$Input$textH
 		spellchecked: false,
 		type_: mdgriffith$elm_ui$Element$Input$TextInputNode('text')
 	});
-var author$project$FubarDungeon$newAccount = A2(
-	mdgriffith$elm_ui$Element$column,
-	_List_fromArray(
-		[mdgriffith$elm_ui$Element$centerX, mdgriffith$elm_ui$Element$centerY]),
-	_List_fromArray(
-		[
-			A2(
-			mdgriffith$elm_ui$Element$paragraph,
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$paddingEach(
-					{bottom: 0, left: 0, right: 0, top: 10})
-				]),
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$text('Oh ye brave and courageous Player, write your UserNAME here!')
-				])),
-			A2(
-			mdgriffith$elm_ui$Element$Input$text,
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$Border$color(
-					A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
-					mdgriffith$elm_ui$Element$Border$width(1)
-				]),
-			{
-				label: A2(
-					mdgriffith$elm_ui$Element$Input$labelAbove,
-					_List_fromArray(
-						[
-							mdgriffith$elm_ui$Element$Font$size(18)
-						]),
-					mdgriffith$elm_ui$Element$text('')),
-				onChange: author$project$FubarDungeon$NewUsername,
-				placeholder: elm$core$Maybe$Nothing,
-				text: ''
-			}),
-			A2(
-			mdgriffith$elm_ui$Element$paragraph,
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$paddingEach(
-					{bottom: 0, left: 0, right: 0, top: 50})
-				]),
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$text('New Players start at '),
-					A2(
-					mdgriffith$elm_ui$Element$el,
-					_List_fromArray(
-						[mdgriffith$elm_ui$Element$Font$bold, mdgriffith$elm_ui$Element$Font$italic]),
-					mdgriffith$elm_ui$Element$text('Level 0!'))
-				])),
-			A2(
-			mdgriffith$elm_ui$Element$paragraph,
-			_List_Nil,
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$text('But if you are a veteran you can input your UserLEVEL here...')
-				])),
-			A2(
-			mdgriffith$elm_ui$Element$Input$text,
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$Border$color(
-					A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
-					mdgriffith$elm_ui$Element$Border$width(1)
-				]),
-			{
-				label: A2(
-					mdgriffith$elm_ui$Element$Input$labelAbove,
-					_List_Nil,
-					mdgriffith$elm_ui$Element$text('')),
-				onChange: author$project$FubarDungeon$NewLevel,
-				placeholder: elm$core$Maybe$Nothing,
-				text: ''
-			})
-		]));
+var author$project$FubarDungeon$newAccount = function (model) {
+	return A2(
+		mdgriffith$elm_ui$Element$column,
+		_List_fromArray(
+			[mdgriffith$elm_ui$Element$centerX, mdgriffith$elm_ui$Element$centerY]),
+		_List_fromArray(
+			[
+				A2(
+				mdgriffith$elm_ui$Element$paragraph,
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$paddingEach(
+						{bottom: 0, left: 0, right: 0, top: 10})
+					]),
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$text('Oh ye brave and courageous Player, write your UserNAME here!')
+					])),
+				A2(
+				mdgriffith$elm_ui$Element$Input$text,
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$Border$color(
+						A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
+						mdgriffith$elm_ui$Element$Border$width(1)
+					]),
+				{
+					label: A2(
+						mdgriffith$elm_ui$Element$Input$labelAbove,
+						_List_fromArray(
+							[
+								mdgriffith$elm_ui$Element$Font$size(18)
+							]),
+						mdgriffith$elm_ui$Element$text('')),
+					onChange: author$project$FubarDungeon$NewUsername,
+					placeholder: elm$core$Maybe$Nothing,
+					text: model.tempUsername
+				}),
+				A2(
+				mdgriffith$elm_ui$Element$paragraph,
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$paddingEach(
+						{bottom: 0, left: 0, right: 0, top: 50})
+					]),
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$text('New Players start at '),
+						A2(
+						mdgriffith$elm_ui$Element$el,
+						_List_fromArray(
+							[mdgriffith$elm_ui$Element$Font$bold, mdgriffith$elm_ui$Element$Font$italic]),
+						mdgriffith$elm_ui$Element$text('Level 0!'))
+					])),
+				A2(
+				mdgriffith$elm_ui$Element$paragraph,
+				_List_Nil,
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$text('But if you are a veteran you can input your UserLEVEL here...')
+					])),
+				A2(
+				mdgriffith$elm_ui$Element$Input$text,
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$Border$color(
+						A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
+						mdgriffith$elm_ui$Element$Border$width(1)
+					]),
+				{
+					label: A2(
+						mdgriffith$elm_ui$Element$Input$labelAbove,
+						_List_Nil,
+						mdgriffith$elm_ui$Element$text('')),
+					onChange: author$project$FubarDungeon$NewLevel,
+					placeholder: elm$core$Maybe$Nothing,
+					text: elm$core$String$fromInt(model.tempLevel)
+				})
+			]));
+};
 var author$project$FubarDungeon$SaveAccount = {$: 'SaveAccount'};
 var author$project$FubarDungeon$saveAccountButton = A2(
 	mdgriffith$elm_ui$Element$Input$button,
@@ -11786,43 +11796,45 @@ var mdgriffith$elm_ui$Element$spacingXY = F2(
 				x,
 				y));
 	});
-var author$project$FubarDungeon$createAccountView = A2(
-	mdgriffith$elm_ui$Element$column,
-	_List_fromArray(
-		[
-			mdgriffith$elm_ui$Element$centerX,
-			mdgriffith$elm_ui$Element$centerY,
-			mdgriffith$elm_ui$Element$width(
-			mdgriffith$elm_ui$Element$px(400)),
-			A2(mdgriffith$elm_ui$Element$spacingXY, 0, 20),
-			mdgriffith$elm_ui$Element$padding(10),
-			mdgriffith$elm_ui$Element$Border$color(
-			A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
-			mdgriffith$elm_ui$Element$Border$width(1)
-		]),
-	_List_fromArray(
-		[
-			A2(
-			mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$centerX,
-					mdgriffith$elm_ui$Element$padding(10),
-					mdgriffith$elm_ui$Element$Font$bold,
-					mdgriffith$elm_ui$Element$Font$size(28)
-				]),
-			mdgriffith$elm_ui$Element$text('FUBAR Dungeon')),
-			author$project$FubarDungeon$newAccount,
-			A2(
-			mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[
-					mdgriffith$elm_ui$Element$padding(30)
-				]),
-			mdgriffith$elm_ui$Element$text('')),
-			author$project$FubarDungeon$saveAccountButton,
-			author$project$FubarDungeon$cancelButton
-		]));
+var author$project$FubarDungeon$createAccountView = function (model) {
+	return A2(
+		mdgriffith$elm_ui$Element$column,
+		_List_fromArray(
+			[
+				mdgriffith$elm_ui$Element$centerX,
+				mdgriffith$elm_ui$Element$centerY,
+				mdgriffith$elm_ui$Element$width(
+				mdgriffith$elm_ui$Element$px(400)),
+				A2(mdgriffith$elm_ui$Element$spacingXY, 0, 20),
+				mdgriffith$elm_ui$Element$padding(10),
+				mdgriffith$elm_ui$Element$Border$color(
+				A3(mdgriffith$elm_ui$Element$rgb255, 0, 0, 0)),
+				mdgriffith$elm_ui$Element$Border$width(1)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$centerX,
+						mdgriffith$elm_ui$Element$padding(10),
+						mdgriffith$elm_ui$Element$Font$bold,
+						mdgriffith$elm_ui$Element$Font$size(28)
+					]),
+				mdgriffith$elm_ui$Element$text('FUBAR Dungeon')),
+				author$project$FubarDungeon$newAccount(model),
+				A2(
+				mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						mdgriffith$elm_ui$Element$padding(30)
+					]),
+				mdgriffith$elm_ui$Element$text('')),
+				author$project$FubarDungeon$saveAccountButton,
+				author$project$FubarDungeon$cancelButton
+			]));
+};
 var author$project$FubarDungeon$UserClickedButtonCreateAccountInSelectAccountPage = {$: 'UserClickedButtonCreateAccountInSelectAccountPage'};
 var author$project$FubarDungeon$newAccountButton = A2(
 	mdgriffith$elm_ui$Element$Input$button,
@@ -11897,6 +11909,10 @@ var author$project$FubarDungeon$selectAccountsText = function (model) {
 var author$project$FubarDungeon$UserChangedAccountCheck = F2(
 	function (a, b) {
 		return {$: 'UserChangedAccountCheck', a: a, b: b};
+	});
+var author$project$FubarDungeon$UserClickedButtonEditAccount = F2(
+	function (a, b) {
+		return {$: 'UserClickedButtonEditAccount', a: a, b: b};
 	});
 var author$project$FubarDungeon$checkboxIcon = function (a) {
 	return a ? A2(
@@ -12064,7 +12080,8 @@ var author$project$FubarDungeon$someAccountsText = function (model) {
 										_List_fromArray(
 											[mdgriffith$elm_ui$Element$centerX]),
 										mdgriffith$elm_ui$Element$text('EDIT')),
-									onPress: elm$core$Maybe$Nothing
+									onPress: elm$core$Maybe$Just(
+										A2(author$project$FubarDungeon$UserClickedButtonEditAccount, account.userName, account.userLevel))
 								}),
 								A2(
 								mdgriffith$elm_ui$Element$el,
@@ -12427,7 +12444,7 @@ var author$project$FubarDungeon$view = function (model) {
 		if (_n0.$ === 'SelectAccountPage') {
 			return author$project$FubarDungeon$selectAccountView(model);
 		} else {
-			return author$project$FubarDungeon$createAccountView;
+			return author$project$FubarDungeon$createAccountView(model);
 		}
 	}();
 	return {

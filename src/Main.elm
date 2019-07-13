@@ -28,7 +28,7 @@ type Msg
     | NewLevel String
     | SaveAccount
     | UserChangedAccountCheck Int Bool
- --   | UserClickedButtonEditAccount Int
+    | UserClickedButtonEditAccount String Int
 
 
 type Page
@@ -128,13 +128,14 @@ update msg model =
             , Cmd.none
             )
 
-        {- UserClickedButtonEditAccount id ->
+        UserClickedButtonEditAccount name level ->
             ( { model
                 | currPage = CreateAccountPage
-                , tempUsername = editAccount id
+                , tempUsername = name
+                , tempLevel = level
               }
             , Cmd.none
-            ) -}
+            )
 
 
 newCheckStatus : Bool -> Account -> Account
@@ -142,17 +143,6 @@ newCheckStatus newStatus account =
     { account | isSelected = newStatus }
 
 
-{- editAccount : Model -> Int -> String
-editAccount model id =
-    model.accounts
-        >> List.map
-            (\_ account ->
-                if account.indexID == id then
-                    account.userName
-
-                else
-                    "Could Not Find Value"
-            ) -}
 
 
 
@@ -168,7 +158,7 @@ view model =
                     selectAccountView model
 
                 CreateAccountPage ->
-                    createAccountView
+                    createAccountView model
     in
     { title = "FUBAR Dungeon"
     , body =
@@ -269,7 +259,7 @@ someAccountsText model =
                             , height (px 20)
                             ]
                             { label = el [ centerX ] (text "EDIT")
-                            , onPress = Nothing {- Just UserClickedButtonEditAccount account.indexID -}
+                            , onPress = Just (UserClickedButtonEditAccount account.userName account.userLevel)
                             }
                         , el [] (text " ")
                         , Input.button
@@ -339,8 +329,8 @@ startDelveButton =
         }
 
 
-createAccountView : Element Msg
-createAccountView =
+createAccountView : Model -> Element Msg
+createAccountView model =
     column
         [ centerX
         , centerY
@@ -357,15 +347,15 @@ createAccountView =
             , Font.size 28
             ]
             (text "FUBAR Dungeon")
-        , newAccount
+        , newAccount model
         , el [ padding 30 ] (text "")
         , saveAccountButton
         , cancelButton
         ]
 
 
-newAccount : Element Msg
-newAccount =
+newAccount : Model -> Element Msg
+newAccount model =
     column
         [ centerX
         , centerY
@@ -378,7 +368,7 @@ newAccount =
             { label = Input.labelAbove [ Font.size 18 ] (text "")
             , onChange = NewUsername
             , placeholder = Nothing
-            , text = ""
+            , text = model.tempUsername
             }
         , paragraph [ paddingEach { top = 50, bottom = 0, left = 0, right = 0 } ]
             [ text "New Players start at "
@@ -392,7 +382,7 @@ newAccount =
             { label = Input.labelAbove [] (text "")
             , onChange = NewLevel
             , placeholder = Nothing
-            , text = ""
+            , text = model.tempLevel |> String.fromInt
             }
         ]
 
