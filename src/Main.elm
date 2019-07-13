@@ -28,6 +28,7 @@ type Msg
     | NewLevel String
     | SaveAccount
     | UserChangedAccountCheck Int Bool
+ --   | UserClickedButtonEditAccount Int
 
 
 type Page
@@ -127,10 +128,31 @@ update msg model =
             , Cmd.none
             )
 
+        {- UserClickedButtonEditAccount id ->
+            ( { model
+                | currPage = CreateAccountPage
+                , tempUsername = editAccount id
+              }
+            , Cmd.none
+            ) -}
+
 
 newCheckStatus : Bool -> Account -> Account
 newCheckStatus newStatus account =
     { account | isSelected = newStatus }
+
+
+{- editAccount : Model -> Int -> String
+editAccount model id =
+    model.accounts
+        >> List.map
+            (\_ account ->
+                if account.indexID == id then
+                    account.userName
+
+                else
+                    "Could Not Find Value"
+            ) -}
 
 
 
@@ -234,8 +256,37 @@ someAccountsText model =
                             }
                         , el [ centerX, padding 10 ]
                             (text (account.userName ++ " - Level " ++ String.fromInt account.userLevel))
-                        , el [] (text "edit")
-                        , el [] (text "delete")
+                        , Input.button
+                            [ Background.color (rgb255 143 143 143)
+                            , Border.color (rgb255 0 0 0)
+                            , Border.rounded 20
+                            , Border.width 1
+                            , Font.bold
+                            , Font.size 12
+                            , Font.color (rgb255 230 230 230)
+                            , centerX
+                            , width (px 55)
+                            , height (px 20)
+                            ]
+                            { label = el [ centerX ] (text "EDIT")
+                            , onPress = Nothing {- Just UserClickedButtonEditAccount account.indexID -}
+                            }
+                        , el [] (text " ")
+                        , Input.button
+                            [ Background.color (rgb255 143 143 143)
+                            , Border.color (rgb255 0 0 0)
+                            , Border.rounded 20
+                            , Border.width 1
+                            , Font.bold
+                            , Font.size 12
+                            , Font.color (rgb255 230 230 230)
+                            , centerX
+                            , width (px 55)
+                            , height (px 20)
+                            ]
+                            { label = el [ centerX ] (text "DELETE")
+                            , onPress = Just UserClickedButtonCreateAccountInSelectAccountPage
+                            }
                         ]
                 )
         )
