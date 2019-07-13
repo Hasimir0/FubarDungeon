@@ -9,7 +9,7 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
-import List.Extra as Extra exposing (updateAt, count)
+import List.Extra as Extra exposing (updateAt)
 
 
 type alias Model =
@@ -115,7 +115,15 @@ update msg model =
             )
 
         UserChangedAccountCheck id check ->
-            ( { model | accounts = Extra.updateAt id (newCheckStatus check) model.accounts }
+            ( { model
+                | accounts = model.accounts |> Extra.updateAt id (newCheckStatus check)
+                , totSelected =
+                    if check == True then
+                        model.totSelected + 1
+
+                    else
+                        model.totSelected - 1
+              }
             , Cmd.none
             )
 
@@ -180,14 +188,17 @@ selectAccountView model =
 selectAccountsText : Model -> Element Msg
 selectAccountsText model =
     el [ centerX ]
-        (text
-            ("Select at least " ++ ((2 - Extra.count (isSelected == True) model.accounts |> String.fromInt) ++ " more account" ++ plural model))
+        (if model.totSelected < 2 then
+            text ("Select at least " ++ String.fromInt (2 - model.totSelected) ++ " more account" ++ plural model)
+
+         else
+            text "You are ready to start a new delve!"
         )
 
 
 plural : Model -> String
 plural model =
-    if List.length model.accounts == 1 then
+    if model.totSelected == 1 then
         " "
 
     else

@@ -5096,7 +5096,8 @@ var author$project$FubarDungeon$update = F2(
 								elm_community$list_extra$List$Extra$updateAt,
 								id,
 								author$project$FubarDungeon$newCheckStatus(check),
-								model.accounts)
+								model.accounts),
+							totSelected: check ? (model.totSelected + 1) : (model.totSelected - 1)
 						}),
 					elm$core$Platform$Cmd$none);
 		}
@@ -11883,15 +11884,15 @@ var author$project$FubarDungeon$noAccountsText = A2(
 			mdgriffith$elm_ui$Element$text('At least one for each Player.'))
 		]));
 var author$project$FubarDungeon$plural = function (model) {
-	return (elm$core$List$length(model.accounts) === 1) ? ' ' : 's';
+	return (model.totSelected === 1) ? ' ' : 's';
 };
 var author$project$FubarDungeon$selectAccountsText = function (model) {
 	return A2(
 		mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
 			[mdgriffith$elm_ui$Element$centerX]),
-		mdgriffith$elm_ui$Element$text(
-			'Select at least ' + (elm$core$String$fromInt(2 - model.totSelected) + (' more account' + author$project$FubarDungeon$plural(model)))));
+		(model.totSelected < 2) ? mdgriffith$elm_ui$Element$text(
+			'Select at least ' + (elm$core$String$fromInt(2 - model.totSelected) + (' more account' + author$project$FubarDungeon$plural(model)))) : mdgriffith$elm_ui$Element$text('You are ready to start a new delve!'));
 };
 var author$project$FubarDungeon$UserChangedAccountCheck = F2(
 	function (a, b) {
